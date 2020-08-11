@@ -8,20 +8,20 @@ jobs:
 
     strategy:
       matrix:
-        node: [10, 12]
+        node: [10.x, 12.x]
         os: [ubuntu-18.04, windows-2019, macOS-10.14]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
 
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v2.1.1
+      - name: Use Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install
         run: |
-          yarn install
+          npm install
 
       - name: Run lint
         shell: bash
@@ -33,16 +33,5 @@ jobs:
             export NX_BASE=$(git rev-parse HEAD~1)
           fi
           echo "Base => $NX_BASE"
-          yarn nx affected --target=lint --base=origin/master
-
-      - name: Run tests
-        shell: bash
-        run: |
-          if [[ $GITHUB_BASE_REF ]]
-          then
-            export NX_BASE=remotes/origin/$GITHUB_BASE_REF
-          else
-            export NX_BASE=$(git rev-parse HEAD~1)
-          fi
-          echo "Base => $NX_BASE"
-          yarn nx affected --target=test --base=origin/master
+          npm run format:check -- --base=$NX_BASE
+          npm run affected:lint -- --base=$NX_BASE
