@@ -33,8 +33,8 @@ jobs:
             export NX_BASE=$(git rev-parse HEAD~1)
           fi
           echo "Base => $NX_BASE"
-          yarn format:check -- --base=$NX_BASE
-          yarn affected:lint -- --base=$NX_BASE
+          yarn format:check --base=$NX_BASE
+          yarn affected:lint --base=$NX_BASE
 
       - name: Run tests
         shell: bash
@@ -46,4 +46,4 @@ jobs:
             export NX_BASE=$(git rev-parse HEAD~1)
           fi
           echo "Base => $NX_BASE"
-          yarn affected:test -- --base=$NX_BASE
+          yarn affected:test --base=$NX_BASE
